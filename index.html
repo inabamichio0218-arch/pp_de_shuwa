@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#d8e5f0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="パワポ de 手話">
+  <meta name="description" content="全14回の手話講座の復習用スライドをスマートフォンで閲覧できます。">
+  <title>パワポ de 手話 | 全14回のスライド</title>
+  <style>
+    :root { color-scheme: light; --page:#d8e5f0; --blue:#315f81; --ink:#233c52; }
+    * { box-sizing:border-box; }
+    html { background:var(--page); -webkit-text-size-adjust:100%; }
+    body { margin:0; min-width:280px; background:var(--page); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible { outline: 4px solid #f7c85d; outline-offset:3px; }
+    .hidden { display:none !important; }
+    .menu {
+      width:100%; max-width:600px; min-height:100vh; min-height:100dvh;
+      margin:0 auto; background:var(--page) url("assets/jsl_background.png") no-repeat center top / 100% auto;
+      display:flex; flex-direction:column;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+    }
+    /* ロゴとイラストは背景画像のまま表示し、縦横比を変えない */
+    .header-space { flex:none; width:100%; aspect-ratio: 900 / 300; }
+    .menu-grid {
+      display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      column-gap:7.4%; row-gap:8px;
+      grid-template-rows:repeat(7,max-content);
+      flex:1; align-content:space-evenly;
+      padding:0 5.3%; align-items:center;
+    }
+    .lesson {
+      display:block; width:100%; margin:0; padding:0; border:0;
+      background:none; appearance:none; -webkit-appearance:none;
+      cursor:pointer; border-radius:16px; line-height:0;
+      transition:transform .12s ease, filter .12s ease;
+      touch-action:manipulation;
+    }
+    .lesson:active { transform:scale(.975); filter:brightness(.95); }
+    .lesson img { display:block; width:100%; height:auto; max-width:100%; object-fit:contain; }
+    .viewer {
+      min-height:100vh; min-height:100dvh;
+      display:flex; flex-direction:column;
+      background:var(--page);
+    }
+    .viewer-bar {
+      background:#d8e5f0;
+      padding: max(14px, env(safe-area-inset-top)) 16px 12px;
+      text-align:center;
+      border-bottom:1px solid #b6c8d5;
+    }
+    .viewer-title { font-size:clamp(18px,4.7vw,23px); line-height:1.35; font-weight:800; margin:0; }
+    .viewer-hint { margin:6px 0 0; color:#3c5768; font-size:13px; }
+    .viewer-main {
+      width:100%; max-width:900px; margin:0 auto;
+      display:flex; flex:1; flex-direction:column;
+      align-items:center; justify-content:flex-start;
+      padding:clamp(12px,4vw,24px) 10px 125px;
+    }
+    .slide-frame {
+      width:100%; aspect-ratio:16/9; border:0; display:block;
+      background:#fff; border-radius:5px;
+      box-shadow: 0 3px 18px #15334b26;
+    }
+    .viewer-help { font-size:14px; text-align:center; line-height:1.6; max-width:480px; padding:0 18px; }
+    .open-external {
+      display:inline-flex; justify-content:center; align-items:center;
+      min-height:46px; padding:9px 21px; border-radius:22px;
+      border:2px solid #406a83; color:var(--ink); background:#fff;
+      font-size:15px; font-weight:700; text-decoration:none;
+    }
+    .placeholder {
+      width:min(100%,460px); margin-top:8px; padding:34px 22px;
+      background:#fff9; border:2px dashed #7d9bb0; border-radius:14px;
+      text-align:center; line-height:1.85; font-size:16px;
+    }
+    .placeholder h2 { margin:0 0 12px; font-size:21px; }
+    .bottom-bar {
+      position:fixed; left:0; right:0; bottom:0;
+      padding:12px 16px max(14px, env(safe-area-inset-bottom));
+      background:linear-gradient(to bottom,#d8e5f0ef,#d8e5f0);
+      border-top:1px solid #bccbd6;
+      display:flex; justify-content:center;
+      z-index:10;
+    }
+    .back {
+      width:min(100%,450px); min-height:54px;
+      border:0; border-radius:15px; background:#315f81; color:white;
+      box-shadow:0 3px 0 #1c4159;
+      font-size:18px; font-weight:800; touch-action:manipulation;
+    }
+    .back:active { transform:translateY(2px); box-shadow:0 1px 0 #1c4159; }
+    @media (orientation:landscape) and (max-height:550px) {
+      .header-space { aspect-ratio:900/260; }
+      .menu { max-width:540px; }
+      .viewer-main { padding-bottom:100px; }
+      .bottom-bar {padding-block:8px max(8px,env(safe-area-inset-bottom));}
+      .back { min-height:46px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .lesson { transition:none; }
+    }
+  </style>
+</head>
+<body>
+  <main id="menu" class="menu" aria-label="手話講座メニュー">
+    <h1 class="hidden">パワポ de 手話　全14回</h1>
+    <div class="header-space" aria-hidden="true"></div>
+    <nav id="lesson-grid" class="menu-grid" aria-label="講座一覧"></nav>
+  </main>
+
+  <section id="viewer" class="viewer hidden" aria-labelledby="viewer-title">
+    <header class="viewer-bar">
+      <h2 id="viewer-title" class="viewer-title"></h2>
+      <p class="viewer-hint">スライドを左右に送ってご覧ください</p>
+    </header>
+    <div class="viewer-main" id="viewer-main"></div>
+    <footer class="bottom-bar">
+      <button class="back" id="back-btn" type="button">← メニューに戻る</button>
+    </footer>
+  </section>
+
+  <script src="links.js"></script>
+  <script>
+    'use strict';
+    const titles = [
+      '手話とは', '数の表現', '人の表現', '時の表現', '人・時',
+      '疑問詞・色', '動詞', '形容詞', '副詞その他', '気持ち',
+      'よく使う言葉', '生活用語', '町の中', '楽しいまとめ'
+    ];
+    const menu = document.getElementById('menu');
+    const grid = document.getElementById('lesson-grid');
+    const viewer = document.getElementById('viewer');
+    const viewerTitle = document.getElementById('viewer-title');
+    const viewerMain = document.getElementById('viewer-main');
+    let shown = 0;
+    let menuScroll = 0;
+
+    function toDocswell(raw) {
+      if (!raw || typeof raw !== 'string') return null;
+      try {
+        const u = new URL(raw.trim());
+        if (u.protocol !== 'https:' || !['docswell.com','www.docswell.com'].includes(u.hostname)) return null;
+        // 公開URL https://docswell.com/s/user/ABC123-title または埋め込みURL
+        const match = u.pathname.match(/^\/s\/[^/]+\/([A-Za-z0-9]{5,12})(?:-|\/|$)/)
+          || u.pathname.match(/^\/slide\/([A-Za-z0-9]{5,12})\/embed\/?$/);
+        if (!match) return null;
+        return {publicUrl: raw.trim(), embedUrl:'https://www.docswell.com/slide/'+match[1]+'/embed'};
+      } catch { return null; }
+    }
+    function makeEl(tag, opts={}) {
+      const el = document.createElement(tag);
+      Object.entries(opts).forEach(([key,val]) => { if(key === 'text') el.textContent=val; else el.setAttribute(key,val); });
+      return el;
+    }
+    for(let i=1;i<=14;i++) {
+      const btn = makeEl('button',{'class':'lesson','type':'button','aria-label':`第${i}回 ${titles[i-1]}を開く`});
+      const img = makeEl('img',{'src':`assets/jsl_${String(i).padStart(2,'0')}.png`,'alt':`第${i}回 ${titles[i-1]}`,'loading':'eager','decoding':'async','draggable':'false'});
+      btn.appendChild(img);
+      btn.addEventListener('click',()=>openLesson(i));
+      grid.appendChild(btn);
+    }
+    function openLesson(n,updateHistory=true) {
+      if(n<1 || n>14) return;
+      if(!shown) menuScroll=window.scrollY;
+      shown=n;
+      viewerTitle.textContent=`第${n}回　${titles[n-1]}`;
+      viewerMain.replaceChildren();
+      const link=toDocswell((window.JSL_LINKS||{})[n]);
+      if(link){
+        const iframe=makeEl('iframe',{
+          'class':'slide-frame', 'title':`第${n}回 ${titles[n-1]} のDocswellスライド`,
+          'src':link.embedUrl, 'allowfullscreen':'', 'referrerpolicy':'strict-origin-when-cross-origin'
+        });
+        iframe.setAttribute('allow','fullscreen');
+        viewerMain.appendChild(iframe);
+        const help=makeEl('p',{'class':'viewer-help','text':'表示されない場合や文字を大きく見たい場合は、Docswellで直接開いてください。'});
+        viewerMain.appendChild(help);
+        const external=makeEl('a',{'class':'open-external','href':link.publicUrl,'target':'_blank','rel':'noopener noreferrer','text':'Docswellで大きく開く ↗'});
+        viewerMain.appendChild(external);
+      } else {
+        const placeholder=makeEl('div',{'class':'placeholder'});
+        placeholder.appendChild(makeEl('h2',{'text':'スライドのリンクを準備中です'}));
+        placeholder.appendChild(makeEl('p',{'text':'メニュー画面は完成しています。この回のDocswellリンクが登録されると、ここにスライドが表示されます。'}));
+        viewerMain.appendChild(placeholder);
+      }
+      menu.classList.add('hidden');
+      viewer.classList.remove('hidden');
+      window.scrollTo({top:0,behavior:'auto'});
+      if(updateHistory) history.pushState({lesson:n},'',`#lesson-${n}`);
+    }
+    function showMenu(updateHistory=true) {
+      if(!shown) return;
+      shown=0;
+      viewer.classList.add('hidden');
+      menu.classList.remove('hidden');
+      viewerMain.replaceChildren(); // iframeを削除して、ほかの回を読み込まない
+      if(updateHistory) history.replaceState({lesson:0},' ',location.pathname+location.search);
+      window.scrollTo({top:menuScroll,behavior:'auto'});
+    }
+    document.getElementById('back-btn').addEventListener('click',()=>{
+      if(history.state && history.state.lesson) history.back();
+      else showMenu();
+    });
+    window.addEventListener('popstate',()=>{
+      const match=location.hash.match(/^#lesson-(\d{1,2})$/);
+      if(match) openLesson(Number(match[1]),false);
+      else showMenu(false);
+    });
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape' && shown) document.getElementById('back-btn').click(); });
+    // リロード後に選択中の講座へ戻る
+    const initial=location.hash.match(/^#lesson-(\d{1,2})$/);
+    if(initial) openLesson(Number(initial[1]),false);
+  </script>
+</body>
+</html>
