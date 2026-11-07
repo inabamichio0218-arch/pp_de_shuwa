@@ -65,13 +65,6 @@
       background:#fff; border-radius:5px;
       box-shadow: 0 3px 18px #15334b26;
     }
-    .viewer-help { font-size:14px; text-align:center; line-height:1.6; max-width:480px; padding:0 18px; }
-    .open-external {
-      display:inline-flex; justify-content:center; align-items:center;
-      min-height:46px; padding:9px 21px; border-radius:22px;
-      border:2px solid #406a83; color:var(--ink); background:#fff;
-      font-size:15px; font-weight:700; text-decoration:none;
-    }
     .placeholder {
       width:min(100%,460px); margin-top:8px; padding:34px 22px;
       background:#fff9; border:2px dashed #7d9bb0; border-radius:14px;
@@ -177,10 +170,6 @@
         });
         iframe.setAttribute('allow','fullscreen');
         viewerMain.appendChild(iframe);
-        const help=makeEl('p',{'class':'viewer-help','text':'表示されない場合や文字を大きく見たい場合は、Docswellで直接開いてください。'});
-        viewerMain.appendChild(help);
-        const external=makeEl('a',{'class':'open-external','href':link.publicUrl,'target':'_blank','rel':'noopener noreferrer','text':'Docswellで大きく開く ↗'});
-        viewerMain.appendChild(external);
       } else {
         const placeholder=makeEl('div',{'class':'placeholder'});
         placeholder.appendChild(makeEl('h2',{'text':'スライドのリンクを準備中です'}));
